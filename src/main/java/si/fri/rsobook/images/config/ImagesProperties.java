@@ -10,7 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ConfigBundle("properties")
 public class ImagesProperties {
 
-    @ConfigValue(value = "images.maxsize", watch = true)
+    @ConfigValue(value = "maxsize", watch = true)
     private long imagesMaxsize;
 
     public long getImagesMaxsize() {

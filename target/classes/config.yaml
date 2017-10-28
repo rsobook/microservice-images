@@ -11,5 +11,4 @@ kumuluzee:
     etcd:
       hosts: http://localhost:2379
 properties:
-  images:
-    maxsize: 500000
+  maxsize: 500000
