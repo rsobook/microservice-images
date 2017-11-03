@@ -7,8 +7,20 @@ kumuluzee:
     base-url: http://localhost:8080
     http:
       port: 8080
+  datasources:
+      - jndi-name: jdbc/ImagesDS
+        connection-url: jdbc:postgresql://localhost:5432/images
+        username: dbuser
+        password: postgres
+        max-pool-size: 20
   config:
     etcd:
       hosts: http://localhost:2379
 properties:
   maxsize: 500000
+  storageapikey: nepovem
+  storageinstanceid: nepovem
+  storagekeyname: nepovem
+  storagebucket: rsobook-images-eu
+  storagelocation: eu
+  storageendpoint: "https://s3.fra-eu-geo.objectstorage.softlayer.net"
