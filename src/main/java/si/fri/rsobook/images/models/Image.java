@@ -1,20 +1,27 @@
 package si.fri.rsobook.images.models;
 
 
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity(name = "image")
 public class Image {
 
     @Id
     private String id;
 
+    @Column(name = "filename")
     private String filename;
+
+    @Column(name = "url")
     private String url;
 
     public Image(String id, String filename, String url) {
         this.id = id;
         this.filename = filename;
         this.url = url;
+    }
+
+    public Image() {
     }
 
     public String getId() {

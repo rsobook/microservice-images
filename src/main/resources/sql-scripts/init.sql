@@ -1,0 +1,2 @@
+INSERT INTO image (id, filename, url) VALUES ('673eaa50-9e58-4ff5-9786-c281c4489b78', '673eaa50-9e58-4ff5-9786-c281c4489b78_rms.png', 'https://s3.fra-eu-geo.objectstorage.softlayer.net/rsobook-images-eu/673eaa50-9e58-4ff5-9786-c281c4489b78_rms.png');
+INSERT INTO image (id, filename, url) VALUES ('444c63d2-6490-4405-ad93-9ecfd95dbd64', '444c63d2-6490-4405-ad93-9ecfd95dbd64_maka_small.jpg', 'https://s3.fra-eu-geo.objectstorage.softlayer.net/rsobook-images-eu/444c63d2-6490-4405-ad93-9ecfd95dbd64_maka_small.jpg');

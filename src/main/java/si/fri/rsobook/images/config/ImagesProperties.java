@@ -19,9 +19,6 @@ public class ImagesProperties {
     @ConfigValue(value = "storageinstanceid", watch = true)
     private String storageInstanceID;
 
-    @ConfigValue(value = "storagekeyname", watch = true)
-    private String storageKeyName;
-
     @ConfigValue(value = "storagebucket", watch = true)
     private String storageBucketName;
 

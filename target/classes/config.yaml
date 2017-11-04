@@ -20,7 +20,6 @@ properties:
   maxsize: 500000
   storageapikey: nepovem
   storageinstanceid: nepovem
-  storagekeyname: nepovem
   storagebucket: rsobook-images-eu
   storagelocation: eu
   storageendpoint: "https://s3.fra-eu-geo.objectstorage.softlayer.net"
