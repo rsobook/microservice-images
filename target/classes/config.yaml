@@ -18,8 +18,8 @@ kumuluzee:
       hosts: http://localhost:2379
 properties:
   maxsize: 500000
-  storageapikey: nepovem
-  storageinstanceid: nepovem
+  storageapikey: nastimaj_si_env_variable
+  storageinstanceid: nastimaj_si_env_variable
+  storageendpoint: https://cos-service.bluemix.net/endpoints
   storagebucket: rsobook-images-eu
   storagelocation: eu
-  storageendpoint: "https://s3.fra-eu-geo.objectstorage.softlayer.net"

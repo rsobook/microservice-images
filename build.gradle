@@ -1,0 +1,212 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
+    }
+}
+
+group 'si.fri.rsobook'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+sourceCompatibility = 1.8
+
+ext {
+    dockerHubUser =  project.hasProperty('DOCKER_HUB_USER') ? DOCKER_HUB_USER : System.getenv('DOCKER_HUB_USER')
+    dockerHubEmail =  project.hasProperty('DOCKER_HUB_EMAIL') ? DOCKER_HUB_EMAIL : System.getenv('DOCKER_HUB_EMAIL')
+    dockerHubPassword =  project.hasProperty('DOCKER_HUB_PASSWORD') ? DOCKER_HUB_PASSWORD : System.getenv('DOCKER_HUB_PASSWORD')
+
+    storageApiKey =  project.hasProperty('PROPERTIES_STORAGEAPIKEY') ? PROPERTIES_STORAGEAPIKEY : System.getenv('PROPERTIES_STORAGEAPIKEY')
+    storageInstanceId =  project.hasProperty('PROPERTIES_STORAGEINSTANCEID') ? PROPERTIES_STORAGEINSTANCEID : System.getenv('PROPERTIES_STORAGEINSTANCEID')
+
+    port = "5009"
+    dockerHostname = "images.rsobook.fri.si"
+    dockerImageName = String.format("%s/%s", dockerHubUser, project.name)
+    dockerImageTag = String.format("%s:%s", dockerImageName, version)
+    dockerContainerName = String.format("%s", project.name)
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://box.kisek.si/nexus/repository/maven-releases'
+    }
+}
+
+dependencies {
+
+    compile group: 'si.fri.rsobook', name: 'rsobook-core', version: '1.1'
+
+    compile group: "com.kumuluz.ee", name: 'kumuluzee-core', version: '2.4.1'
+    compile group: "com.kumuluz.ee", name: 'kumuluzee-cdi-weld', version: '2.4.1'
+    compile group: "com.kumuluz.ee", name: 'kumuluzee-servlet-jetty', version: '2.4.1'
+    compile group: "com.kumuluz.ee", name: 'kumuluzee-jpa-hibernate', version: '2.4.1'
+    compile group: "com.kumuluz.ee.config", name: 'kumuluzee-config-etcd', version: '1.0.0'
+
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.1'
+
+    compile group: 'com.ibm.cos', name: 'ibm-cos-java-sdk', version: '1.0.2'
+
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+/**
+ * KUMULUZEE TASKS
+ */
+
+task buildKumuluzEE(type: Jar){
+    group 'kumuluzee'
+    dependsOn assemble
+
+    into('lib') { from configurations.compile }
+    from project.projectDir.path + "/build-dependency/jar"
+    from "src/main/resources"
+    from "build/classes/java/main"
+
+    manifest { attributes("Main-Class": "com.kumuluz.ee.loader.EeBootLoader") }
+
+    archivesBaseName = project.name
+    destinationDir = file("$rootDir/build/kumuluzee")
+}
+
+task runKumuluzEE(type: JavaExec) {
+    group 'kumuluzee'
+    dependsOn buildKumuluzEE
+
+    environment('PORT', '8080')
+
+    main = "-jar"
+    args buildKumuluzEE.archivePath.path
+}
+
+
+/**
+ * DOCKER TASKS
+ */
+
+import com.bmuschko.gradle.docker.tasks.container.*
+import com.bmuschko.gradle.docker.tasks.image.*
+
+docker {
+    registryCredentials {
+        url = 'https://hub.docker.com/'
+        email = dockerHubEmail
+        password = dockerHubPassword
+        username = dockerHubUser
+    }
+}
+
+task dockerfileCreate(type: Dockerfile) {
+    group 'docker'
+    destFile = project.file('build/kumuluzee/Dockerfile')
+    from 'openjdk:8-jdk'
+    maintainer 'Jan Gasperlin "jg1724@student.uni-lj.si"'
+    environmentVariable("PORT", port)
+    environmentVariable("JAR", buildKumuluzEE.archiveName)
+    environmentVariable("DB_NAME", 'rsobook-image')
+    environmentVariable("DB_HOST", 'localhost')
+    environmentVariable("DB_PORT", '5432')
+    environmentVariable("DB_USERNAME", 'dbuser')
+    environmentVariable("DB_PASSWORD", 'postgres')
+    environmentVariable("PROPERTIES_STORAGEAPIKEY", storageApiKey)
+    environmentVariable("PROPERTIES_STORAGEINSTANCEID", storageInstanceId)
+    exposePort {
+        String.format("%s:%s", port, port)
+    }
+    addFile(buildKumuluzEE.archiveName, "/usr/local/bin/kumuluzee/")
+    addFile("config.yaml", "/usr/local/bin/kumuluzee")
+    addFile("run.sh", "/usr/local/bin/kumuluzee")
+    defaultCommand('/bin/bash','/usr/local/bin/kumuluzee/run.sh', 'start')
+}
+
+task dockerfileCopyScript(type: Copy){
+    group 'docker'
+    from project.projectDir.path + "/build-dependency/run.sh"
+    from project.projectDir.path + "/build-dependency/config.yaml"
+    into dockerfileCreate.destFile.parentFile
+}
+
+task containerStop(type: DockerStopContainer) {
+    group 'docker'
+    targetContainerId {
+        dockerContainerName
+    }
+    onError {
+        error -> println error.toString()
+    }
+}
+
+task containerRemove(type: DockerRemoveContainer) {
+    group 'docker'
+    dependsOn containerStop
+    targetContainerId {
+        dockerContainerName
+    }
+    onError {
+        error -> println error.toString()
+    }
+}
+
+task imageRemove(type: DockerRemoveImage) {
+    group 'docker'
+    dependsOn containerRemove
+    imageId dockerImageTag
+    onError {
+        error -> println error.toString()
+    }
+}
+
+task imageBuild(type: DockerBuildImage) {
+    group 'docker'
+    dependsOn imageRemove
+    dependsOn dockerfileCreate
+    dependsOn dockerfileCopyScript
+    dependsOn buildKumuluzEE
+    inputDir = dockerfileCreate.destFile.parentFile
+    tag = dockerImageTag
+    //noCache = true
+}
+
+task imagePushToDockerHub(type: DockerPushImage){
+    group 'docker'
+    imageName = dockerImageTag
+    tag = version
+}
+
+task containerCreate(type: DockerCreateContainer) {
+    group 'docker'
+    dependsOn imageBuild
+    targetImageId {
+        dockerImageTag
+    }
+    containerName = dockerContainerName
+    portBindings = [String.format("%s:%s", port, port)]
+    hostName = dockerHostname
+    network = 'rsonetwork'
+}
+
+task containerStart(type: DockerStartContainer) {
+    group 'docker'
+    targetContainerId {
+        dockerContainerName
+    }
+}
+
+task dockerBootstrap() {
+    group 'docker'
+    dependsOn containerCreate
+    dependsOn containerStart
+    containerCreate.finalizedBy containerStart
+}

@@ -52,6 +52,30 @@ public class ImagesProperties {
         return storageEndpoint;
     }
 
+    public void setImagesMaxsize(long imagesMaxsize) {
+        this.imagesMaxsize = imagesMaxsize;
+    }
+
+    public void setStorageApiKey(String storageApiKey) {
+        this.storageApiKey = storageApiKey;
+    }
+
+    public void setStorageInstanceID(String storageInstanceID) {
+        this.storageInstanceID = storageInstanceID;
+    }
+
+    public void setStorageBucketName(String storageBucketName) {
+        this.storageBucketName = storageBucketName;
+    }
+
+    public void setStorageLocation(String storageLocation) {
+        this.storageLocation = storageLocation;
+    }
+
+    public void setStorageEndpoint(String storageEndpoint) {
+        this.storageEndpoint = storageEndpoint;
+    }
+
     public void setAll(long imagesMaxsize, String storageApiKey, String storageInstanceID, String storageBucketName, String storageLocation, String storageEndpoint) {
         this.imagesMaxsize = imagesMaxsize;
         this.storageApiKey = storageApiKey;

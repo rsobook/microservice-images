@@ -44,19 +44,6 @@ public class ImageBean {
 
     public Image createImage(Part part) throws IOException, UploadException {
 
-        //TODO: pogruntaj zakaj tistle @Inject ne dela
-
-        if (imagesProperties.getStorageApiKey() == null) {
-            System.out.println("\n\n INJECT NE DELA! \n\n");
-            imagesProperties.setAll(
-                    2000000,
-                    "nepovem",
-                    "nepovem",
-                    "rsobook-images-eu",
-                    "eu",
-                    "https://s3.fra-eu-geo.objectstorage.softlayer.net"
-            );
-        }
         System.out.println("imagesProperties: " + imagesProperties.toString());
         Image image = null;
 
