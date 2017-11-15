@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: microservice-images
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: images
+    spec:
+      containers:
+      - image: rsobook/microservice-images:1.0
+        name: images
+        env:
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+            value: jdbc:postgresql://postgres:5432/image
+          - name: KUMULUZEE_SERVER_BASEURL
+            value: kva_tle
+          - name: PROPERTIES_STORAGEAPIKEY
+            value: secret
+          - name: PROPERTIES_STORAGEINSTANCEID
+            value: secret
+        ports:
+        - containerPort: 8080
+          name: server
+          protocol: TCP

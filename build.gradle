@@ -120,8 +120,6 @@ task dockerfileCreate(type: Dockerfile) {
     environmentVariable("DB_PORT", '5432')
     environmentVariable("DB_USERNAME", 'dbuser')
     environmentVariable("DB_PASSWORD", 'postgres')
-    environmentVariable("PROPERTIES_STORAGEAPIKEY", storageApiKey)
-    environmentVariable("PROPERTIES_STORAGEINSTANCEID", storageInstanceId)
     exposePort {
         String.format("%s:%s", port, port)
     }
