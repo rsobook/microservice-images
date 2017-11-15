@@ -25,7 +25,7 @@ ext {
     storageApiKey =  project.hasProperty('PROPERTIES_STORAGEAPIKEY') ? PROPERTIES_STORAGEAPIKEY : System.getenv('PROPERTIES_STORAGEAPIKEY')
     storageInstanceId =  project.hasProperty('PROPERTIES_STORAGEINSTANCEID') ? PROPERTIES_STORAGEINSTANCEID : System.getenv('PROPERTIES_STORAGEINSTANCEID')
 
-    port = "5009"
+    port = "8080"
     dockerHostname = "images.rsobook.fri.si"
     dockerImageName = String.format("%s/%s", dockerHubUser, project.name)
     dockerImageTag = String.format("%s:%s", dockerImageName, version)
