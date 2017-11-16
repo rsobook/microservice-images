@@ -1,5 +1,5 @@
 kumuluzee:
-  name: rsobook-image-microservice
+  name: microservice-images
   env:
     name: dev
   version: 1.0.0
