@@ -8,10 +8,10 @@ kumuluzee:
     http:
       port: 8080
   datasources:
-      - jndi-name: jdbc/ImagesDS
-        connection-url: jdbc:postgresql://localhost:5432/images
-        username: dbuser
-        password: postgres
+      - jndi-name: jdbc/RsobookDS
+        connection-url: jdbc:postgresql://localhost:5432/rsobook-images
+        username: postgres
+        password: root
         max-pool-size: 20
   config:
     etcd:

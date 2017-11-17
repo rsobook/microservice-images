@@ -9,7 +9,7 @@ buildscript {
 }
 
 group 'si.fri.rsobook'
-version '1.0.1'
+version '1.0.2'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -112,21 +112,16 @@ task dockerfileCreate(type: Dockerfile) {
     group 'docker'
     destFile = project.file('build/kumuluzee/Dockerfile')
     from 'openjdk:8-jdk'
-    maintainer 'Jan Gasperlin "jg1724@student.uni-lj.si"'
+    maintainer 'Nejc Kisek "nk4741@student.uni-lj.si"'
     environmentVariable("PORT", port)
-    environmentVariable("JAR", buildKumuluzEE.archiveName)
-    environmentVariable("DB_NAME", 'rsobook-image')
-    environmentVariable("DB_HOST", 'localhost')
-    environmentVariable("DB_PORT", '5432')
-    environmentVariable("DB_USERNAME", 'dbuser')
-    environmentVariable("DB_PASSWORD", 'postgres')
+    environmentVariable("KUMULUZEE_DATASOURCES0_CONNECTIONURL", 'jdbc:postgresql://localhost:5432/rsobook-images')
+    environmentVariable("KUMULUZEE_DATASOURCES0_USERNAME", 'postgres')
+    environmentVariable("KUMULUZEE_DATASOURCES0_PASSWORD", 'root')
     exposePort {
         String.format("%s:%s", port, port)
     }
     addFile(buildKumuluzEE.archiveName, "/usr/local/bin/kumuluzee/")
-    addFile("config.yaml", "/usr/local/bin/kumuluzee")
-    addFile("run.sh", "/usr/local/bin/kumuluzee")
-    defaultCommand('/bin/bash','/usr/local/bin/kumuluzee/run.sh', 'start')
+    defaultCommand('java','-jar', '/usr/local/bin/kumuluzee/'+buildKumuluzEE.archiveName)
 }
 
 task dockerfileCopyScript(type: Copy){
