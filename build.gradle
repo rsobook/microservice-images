@@ -22,8 +22,8 @@ ext {
     dockerHubEmail =  project.hasProperty('DOCKER_HUB_EMAIL') ? DOCKER_HUB_EMAIL : System.getenv('DOCKER_HUB_EMAIL')
     dockerHubPassword =  project.hasProperty('DOCKER_HUB_PASSWORD') ? DOCKER_HUB_PASSWORD : System.getenv('DOCKER_HUB_PASSWORD')
 
-    storageApiKey =  project.hasProperty('PROPERTIES_STORAGEAPIKEY') ? PROPERTIES_STORAGEAPIKEY : System.getenv('PROPERTIES_STORAGEAPIKEY')
-    storageInstanceId =  project.hasProperty('PROPERTIES_STORAGEINSTANCEID') ? PROPERTIES_STORAGEINSTANCEID : System.getenv('PROPERTIES_STORAGEINSTANCEID')
+    //storageApiKey =  project.hasProperty('PROPERTIES_STORAGEAPIKEY') ? PROPERTIES_STORAGEAPIKEY : System.getenv('PROPERTIES_STORAGEAPIKEY')
+    //storageInstanceId =  project.hasProperty('PROPERTIES_STORAGEINSTANCEID') ? PROPERTIES_STORAGEINSTANCEID : System.getenv('PROPERTIES_STORAGEINSTANCEID')
 
     port = "8080"
     dockerHostname = "images.rsobook.fri.si"

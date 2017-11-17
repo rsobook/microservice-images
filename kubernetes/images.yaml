@@ -7,18 +7,18 @@ spec:
   template:
     metadata:
       labels:
-        app: images
+        app: microservice-images
     spec:
       containers:
-      - image: rsobook/microservice-images:1.0
-        name: images
+      - image: rsobook/microservice-images
+        name: microservice-images
         env:
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
-            value: http://etcd:2379
+            value: http://microservice-etcd:2379
           - name: KUMULUZEE_CONFIG_ETCD_HOSTS
-            value: http://etcd:2379
+            value: http://microservice-etcd:2379
           - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-            value: jdbc:postgresql://postgres:5432/images
+            value: jdbc:postgresql://microservice-database:5432/images
           - name: KUMULUZEE_SERVER_BASEURL
             value: kva_tle
           - name: PROPERTIES_STORAGEAPIKEY
