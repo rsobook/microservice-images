@@ -10,7 +10,7 @@ spec:
         app: microservice-images
     spec:
       containers:
-      - image: rsobook/microservice-images
+      - image: rsobook/microservice-images:1.0.1
         name: microservice-images
         env:
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
