@@ -10,7 +10,7 @@ spec:
         app: ms-images
     spec:
       containers:
-      - image: rsobook/ms-images:1.0.2
+      - image: rsobook/ms-images:2.0.0
         name: ms-images
         env:
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
@@ -22,9 +22,9 @@ spec:
           - name: KUMULUZEE_SERVER_BASEURL
             value: http://10.126.123.38:32696
           - name: PROPERTIES_STORAGEAPIKEY
-            value: 8WEP6C_HpWK05d8tVR8wcDJZ4YEpXoIuPzf064GfwU_9
+            value: "nepovem"
           - name: PROPERTIES_STORAGEINSTANCEID
-            value: "crn:v1:bluemix:public:cloud-object-storage:global:a/68aa4a3ebc6d45c593e585d3c4e8b258:f1a7204f-6d5e-4fc0-96d0-4da179cfeb84::"
+            value: "nepovem"
         ports:
         - containerPort: 8080
           name: server
