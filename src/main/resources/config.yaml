@@ -17,38 +17,38 @@ kumuluzee:
     etcd:
       hosts: http://localhost:2379
   discovery:
-      etcd:
-        hosts: http://localhost:2379
-      ttl: 20
-      ping-interval: 15
+    etcd:
+      hosts: http://localhost:2379
+    ttl: 20
+    ping-interval: 15
   health:
-      servlet:
-        mapping: /health
-        enabled: true
-      logs:
-        enabled: false
-        level: INFO
-        period-s: 30
-      checks:
-        data-source-health-check:
-          jndi-name: jdbc/RsobookDS
-        disk-space-health-check:
-          threshold: 100000000
-    metrics:
-      generic-registry-name: default
-      jvm:
-        enabled: true
-        registry-name: jvm
-      servlet:
-        enabled: true
-        mapping: /metrics
-      logs:
-        enabled: false
-        period-s: 30
-        level: INFO
-      web-instrumentation:
-        - name: image-endpoint
-          url-pattern: /servlet/v1/*
+    servlet:
+      mapping: /health
+      enabled: true
+    logs:
+      enabled: false
+      level: INFO
+      period-s: 30
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/RsobookDS
+      disk-space-health-check:
+        threshold: 100000000
+  metrics:
+    generic-registry-name: default
+    jvm:
+      enabled: true
+      registry-name: jvm
+    servlet:
+      enabled: true
+      mapping: /metrics
+    logs:
+      enabled: false
+      period-s: 30
+      level: INFO
+    web-instrumentation:
+      - name: image-endpoint
+        url-pattern: /servlet/v1/*
 properties:
   maxsize: 500000
   storageapikey: nastimaj_si_env_variable
