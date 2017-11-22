@@ -4,3 +4,5 @@ build
 *.jpg
 *.png
 gradle.properties
+kubernetes/images.yaml
+images-with-secrets.yaml
