@@ -1,7 +1,7 @@
 kumuluzee:
   datasources:
     - jndi-name: jdbc/RsobookDS
-      connection-url: jdbc:postgresql://microservice-database:5432/rsobook-images
+      connection-url: jdbc:postgresql://ms-database:5432/rsobook-images
       username: postgres
       password: root
       max-pool-size: 10

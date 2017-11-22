@@ -1,5 +1,5 @@
 kumuluzee:
-  name: microservice-images
+  name: ms-images
   env:
     name: dev
   version: 1.0.0
