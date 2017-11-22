@@ -1,4 +1,4 @@
-package si.fri.rsobook.images.api.v1;
+package si.fri.rsobook.images.servlet;
 
 
 import si.fri.rsobook.images.ImageBean;
@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "ImageServlet", urlPatterns = {"/api/v1/images", "/api/v1/images/*"})
+@WebServlet(name = "ImageServlet", urlPatterns = {"/servlet/v1/images", "/api/v1/images/*"})
 @RequestScoped
 @MultipartConfig
 public class ImagesServlet extends HttpServlet {
