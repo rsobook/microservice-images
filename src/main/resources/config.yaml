@@ -4,9 +4,9 @@ kumuluzee:
     name: dev
   version: 2.0.0
   server:
-    base-url: http://localhost:8080
+    base-url: http://localhost:8083
     http:
-      port: 8080
+      port: 8083
   datasources:
       - jndi-name: jdbc/RsobookDS
         connection-url: jdbc:postgresql://localhost:5432/rsobook-images
@@ -48,11 +48,11 @@ kumuluzee:
       level: INFO
     web-instrumentation:
       - name: image-endpoint
-        url-pattern: /servlet/v1/*
+        url-pattern: /api/v1/*
 properties:
   maxsize: 500000
   storageapikey: nastimaj_si_env_variable
   storageinstanceid: nastimaj_si_env_variable
-  storageendpoint: https://cos-service.bluemix.net/endpoints
+  storageendpoint: https://s3.eu-geo.objectstorage.softlayer.net
   storagebucket: rsobook-images-eu
-  storagelocation: eu
+  storagelocation: eu-geo

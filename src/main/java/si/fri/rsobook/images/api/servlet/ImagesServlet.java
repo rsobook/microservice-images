@@ -1,6 +1,9 @@
-package si.fri.rsobook.images.servlet;
+package si.fri.rsobook.images.api.servlet;
 
 
+import org.eclipse.microprofile.metrics.Counter;
+import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Metric;
 import si.fri.rsobook.images.ImageBean;
 import si.fri.rsobook.images.exception.UploadException;
 import si.fri.rsobook.images.models.Image;
@@ -19,7 +22,7 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name = "ImageServlet", urlPatterns = {"/servlet/v1/images", "/api/v1/images/*"})
+@WebServlet( name = "ImageServlet", urlPatterns = {"/api/v1/images", "/api/v1/images/*"})
 @RequestScoped
 @MultipartConfig
 public class ImagesServlet extends HttpServlet {
@@ -30,6 +33,16 @@ public class ImagesServlet extends HttpServlet {
     @Inject
     private ImageBean imageBean;
 
+    @Inject
+    @Metric(name = "imagesUploadedCounter")
+    private Counter imagesUploadedCounter;
+
+    @Inject
+    @Metric(name = "imagesFailedCounter")
+    private Counter imagesFailedCounter;
+
+
+    @Metered(name = "imageUpload")
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -40,11 +53,12 @@ public class ImagesServlet extends HttpServlet {
             resp.setHeader("Location", "/api/v1/images/" + img.getId());
             resp.setHeader("Url", img.getUrl());
             resp.getWriter().println("Image successfully uploaded");
-
+            imagesUploadedCounter.inc();
         } catch (UploadException e) {
             e.printStackTrace();
             resp.setStatus(e.errorCode);
             resp.getWriter().println("ERROR: " + e.getMessage());
+            imagesFailedCounter.inc();
         }
         resp.flushBuffer();
 

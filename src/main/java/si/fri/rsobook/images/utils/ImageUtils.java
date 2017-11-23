@@ -34,17 +34,12 @@ public class ImageUtils {
             credentials = new BasicAWSCredentials(access_key, secret_key);
         }
         ClientConfiguration clientConfig = new ClientConfiguration().withRequestTimeout(5000);
-        clientConfig.addHeader("x-amz-acl", "public-read");
         clientConfig.setUseTcpKeepAlive(true);
 
-        AmazonS3 client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint_url, location))
-                .withPathStyleAccessEnabled(true)
-                .withClientConfiguration(clientConfig)
-                .build();
-
-        return client;
+        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint_url, location)).withPathStyleAccessEnabled(true)
+                .withClientConfiguration(clientConfig).build();
+        return s3Client;
     }
 
     /*

@@ -18,7 +18,9 @@ public class ConfigHealthCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
 
-        if(imagesProperties.getImagesMaxsize() > 5000){
+        System.out.println("Config Health Check");
+        System.out.println("imageProperties:" + imagesProperties.toString());
+        if(imagesProperties.getImagesMaxsize() <= 5000){
             return HealthCheckResponse.named(ConfigHealthCheck.class.getSimpleName()).down().build();
         }
 

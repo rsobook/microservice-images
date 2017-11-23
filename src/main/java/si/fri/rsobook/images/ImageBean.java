@@ -2,7 +2,9 @@ package si.fri.rsobook.images;
 
 
 
+import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
 import si.fri.rsobook.images.config.ImagesProperties;
 import si.fri.rsobook.images.exception.UploadException;
 import si.fri.rsobook.images.models.Image;
@@ -71,6 +73,8 @@ public class ImageBean {
 
             //TODO: check if file is really an image?
             // https://console.bluemix.net/docs/services/cloud-object-storage/libraries/java.html#java
+
+            SDKGlobalConfiguration.IAM_ENDPOINT = "https://iam.bluemix.net/oidc/token";
 
             AmazonS3 client = ImageUtils.getS3client(
                     imagesProperties.getStorageApiKey(),
