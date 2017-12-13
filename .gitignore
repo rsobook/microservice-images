@@ -6,3 +6,4 @@ build
 gradle.properties
 kubernetes/images.yaml
 images-with-secrets.yaml
+*.jpeg
