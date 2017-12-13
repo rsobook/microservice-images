@@ -22,12 +22,16 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet( name = "ImageServlet", urlPatterns = {"/api/v1/images", "/api/v1/images/*"})
+import static si.fri.rsobook.images.api.servlet.ImagesServlet.API_PATH;
+
+@WebServlet( name = "ImageServlet", urlPatterns = {API_PATH, API_PATH + "/*"})
 @RequestScoped
 @MultipartConfig
 public class ImagesServlet extends HttpServlet {
 
-    private Pattern regExIdPattern = Pattern.compile("/api/v1/images/(.*)");
+    public static final String API_PATH = "/api/v1/Images";
+
+    private Pattern regExIdPattern = Pattern.compile(API_PATH + "/(.*)");
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
@@ -50,7 +54,7 @@ public class ImagesServlet extends HttpServlet {
             System.out.println(img);
 
             resp.setStatus(HttpServletResponse.SC_CREATED);
-            resp.setHeader("Location", "/api/v1/images/" + img.getId());
+            resp.setHeader("Location", API_PATH + img.getId());
             resp.setHeader("Url", img.getUrl());
             resp.getWriter().println("Image successfully uploaded");
             imagesUploadedCounter.inc();

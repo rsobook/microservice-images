@@ -10,9 +10,11 @@ spec:
         app: ms-images
     spec:
       containers:
-      - image: rsobook/ms-images:2.0.2
+      - image: rsobook/ms-images:2.0.3
         name: ms-images
         env:
+          - name: PORT
+            value: "80"
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
             value: http://ms-etcd:2379
           - name: KUMULUZEE_CONFIG_ETCD_HOSTS
@@ -26,6 +28,6 @@ spec:
           - name: PROPERTIES_STORAGEINSTANCEID
             value: "nepovem"
         ports:
-        - containerPort: 8083
+        - containerPort: 80
           name: server
           protocol: TCP
