@@ -10,7 +10,7 @@ spec:
         app: ms-images
     spec:
       containers:
-      - image: rsobook/ms-images:2.0.3
+      - image: rsobook/ms-images:2.0.4
         name: ms-images
         env:
           - name: PORT

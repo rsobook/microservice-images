@@ -24,6 +24,10 @@ public class ConfigHealthCheck implements HealthCheck {
             return HealthCheckResponse.named(ConfigHealthCheck.class.getSimpleName()).down().build();
         }
 
+        if(imagesProperties.isIoExceptions()) {
+            return HealthCheckResponse.named(ConfigHealthCheck.class.getSimpleName()).down().build();
+        }
+
         return HealthCheckResponse.named(ConfigHealthCheck.class.getSimpleName()).up().build();
     }
 

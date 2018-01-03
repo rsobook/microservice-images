@@ -96,4 +96,18 @@ public class ImagesProperties {
                 ", storageEndpoint='" + storageEndpoint + '\'' +
                 '}';
     }
+
+
+    // set to true, when creating/reading tmp files during upload fails (problems with storage)
+    private boolean ioExceptions = false;
+
+    public boolean isIoExceptions() {
+        return ioExceptions;
+    }
+
+    public void setIoExceptions(boolean ioExceptions) {
+        this.ioExceptions = ioExceptions;
+    }
+
+
 }

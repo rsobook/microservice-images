@@ -9,7 +9,7 @@ buildscript {
 }
 
 group 'si.fri.rsobook'
-version '2.0.3'
+version '2.0.4'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -57,6 +57,9 @@ dependencies {
 
     compile group: 'com.kumuluz.ee.metrics', name: 'kumuluzee-metrics-core', version:'1.0.0-SNAPSHOT'
     compile group: 'com.kumuluz.ee.metrics', name: 'kumuluzee-metrics-logs', version:'1.0.0-SNAPSHOT'
+
+    compile group: "com.kumuluz.ee.fault.tolerance", name: 'kumuluzee-fault-tolerance-hystrix', version: '1.0.0-SNAPSHOT'
+    compile group: "com.netflix.hystrix", name: "hystrix-metrics-event-stream", version: "1.5.12"
 
     compile group: 'org.postgresql', name: 'postgresql', version: '42.1.1'
 

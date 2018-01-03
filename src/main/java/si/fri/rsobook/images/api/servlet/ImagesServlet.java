@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import static si.fri.rsobook.images.api.servlet.ImagesServlet.API_PATH;
 
-@WebServlet( name = "ImageServlet", urlPatterns = {API_PATH, API_PATH + "/*"})
+@WebServlet(name = "ImageServlet", urlPatterns = {API_PATH, API_PATH + "/*"})
 @RequestScoped
 @MultipartConfig
 public class ImagesServlet extends HttpServlet {
@@ -49,21 +49,32 @@ public class ImagesServlet extends HttpServlet {
     @Metered(name = "imageUpload")
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         try {
             Image img = imageBean.createImage(req.getPart("image"));
-            System.out.println(img);
 
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            resp.setHeader("Location", API_PATH + img.getId());
-            resp.setHeader("Url", img.getUrl());
-            resp.getWriter().println("Image successfully uploaded");
-            imagesUploadedCounter.inc();
+            if (img != null) {
+                System.out.println(img);
+
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.setHeader("Location", API_PATH + img.getId());
+                resp.setHeader("Url", img.getUrl());
+                resp.getWriter().println("Image successfully uploaded");
+                imagesUploadedCounter.inc();
+            } else {
+                // uploading failed
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().println("ERROR: image could not be uploaded, try again later");
+                imagesFailedCounter.inc();
+            }
+
         } catch (UploadException e) {
-            e.printStackTrace();
+            System.out.println(e);
             resp.setStatus(e.errorCode);
             resp.getWriter().println("ERROR: " + e.getMessage());
             imagesFailedCounter.inc();
         }
+
         resp.flushBuffer();
 
     }
