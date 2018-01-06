@@ -3,6 +3,9 @@ package si.fri.rsobook.images;
 
 import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AccessControlList;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
 import com.kumuluz.ee.logs.cdi.Log;
@@ -126,7 +129,9 @@ public class ImageBean {
         );
 
         try {
-            client.putObject(imagesProperties.getStorageBucketName(), file.getName(), file);
+            PutObjectRequest req = new PutObjectRequest(imagesProperties.getStorageBucketName(), file.getName(), file)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            client.putObject(req);
         } catch (Exception e) {
             System.err.println(e.getClass() + " " + e.getMessage());
             System.out.println("TRIGGERING InternalServerErrorException");
@@ -150,7 +155,7 @@ public class ImageBean {
         // we could have an upload to a different provider (Amazon S3) here
         // here we just return null
 
-        Image fakeImage =  new Image(uuid, file.getName(), "https://rms.sexy/img/p1010266.jpg");
+        Image fakeImage =  new Image(uuid, file.getName(), "https://box.kisek.si/gor/fetch/Suv/image_upload_failed.jpg");
         log.info("created fake image in fallback method " + fakeImage.toString());
         return fakeImage;
 

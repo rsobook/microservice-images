@@ -38,7 +38,8 @@ public class ImageUtils {
 
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint_url, location)).withPathStyleAccessEnabled(true)
-                .withClientConfiguration(clientConfig).build();
+                .withClientConfiguration(clientConfig)
+                .build();
         return s3Client;
     }
 
