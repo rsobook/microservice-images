@@ -3,6 +3,9 @@ package si.fri.rsobook.images;
 
 import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
+import com.kumuluz.ee.logs.cdi.Log;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
@@ -23,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequestScoped
+@Log
 public class ImageBean {
 
     @Inject
@@ -34,15 +38,18 @@ public class ImageBean {
     @Inject
     private ImagesProperties imagesProperties;
 
+    private Logger log = LogManager.getLogger(ImageBean.class.getName());
 
     public Image getImage(String id) {
         Image img = em.find(Image.class, id);
-
+        log.info("returning image " + img.toString());
         return img;
     }
 
     public List<Image> getAllImages() {
-        return ((TypedQuery<Image>) em.createQuery("SELECT i FROM image i")).getResultList();
+        List<Image> list =  ((TypedQuery<Image>) em.createQuery("SELECT i FROM image i")).getResultList();
+        log.info("returning " + list.size() + " images");
+        return list;
     }
 
 
@@ -80,15 +87,19 @@ public class ImageBean {
                     em.persist(image);
                     em.getTransaction().commit();
                 } catch (Exception e) {
+                    log.error(e);
                     if (em.getTransaction().isActive())
                         em.getTransaction().rollback();
                 }
 
                 tmpFile.delete(); // delete the temp file after if has been uploaded
 
+                log.info("created image " + image.toString());
+
                 return image;
 
             } catch (IOException e) {
+                log.error(e);
                 e.printStackTrace();
                 imagesProperties.setIoExceptions(true); // mark service as not healthy, probably storage problems
                 throw new UploadException("Tmp image file could not have been created", HttpServletResponse.SC_BAD_REQUEST);
@@ -120,6 +131,7 @@ public class ImageBean {
             System.err.println(e.getClass() + " " + e.getMessage());
             System.out.println("TRIGGERING InternalServerErrorException");
             System.out.println("Hystrix should call the fallback method");
+            log.error(e);
 
             throw new InternalServerErrorException(e);
         }
@@ -130,6 +142,7 @@ public class ImageBean {
 
     public Image uploadFallback(String uuid, File file) {
 
+
         System.out.println("*******************************************");
         System.out.println("  FALLBACK METHOD  ");
         System.out.println("*******************************************");
@@ -137,7 +150,10 @@ public class ImageBean {
         // we could have an upload to a different provider (Amazon S3) here
         // here we just return null
 
-        return new Image(uuid, file.getName(), "https://rms.sexy/img/p1010266.jpg");
+        Image fakeImage =  new Image(uuid, file.getName(), "https://rms.sexy/img/p1010266.jpg");
+        log.info("created fake image in fallback method " + fakeImage.toString());
+        return fakeImage;
+
     }
 
 }
