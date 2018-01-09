@@ -9,7 +9,7 @@ buildscript {
 }
 
 group 'si.fri.rsobook'
-version '2.0.6'
+version '2.0.7'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -49,7 +49,9 @@ dependencies {
     compile group: "com.kumuluz.ee", name: 'kumuluzee-jax-rs-jersey', version: '2.4.1'
     compile group: "com.kumuluz.ee", name: 'kumuluzee-servlet-jetty', version: '2.4.1'
     compile group: "com.kumuluz.ee", name: 'kumuluzee-jpa-hibernate', version: '2.4.1'
-    compile group: "com.kumuluz.ee.config", name: 'kumuluzee-config-etcd', version: '1.0.0'
+    compile group: "com.kumuluz.ee.config", name: 'kumuluzee-config-etcd', version: '1.1.0-SNAPSHOT'
+    compile group: 'com.kumuluz.ee.discovery', name: 'kumuluzee-discovery-etcd', version:'1.0.0-SNAPSHOT'
+
 
     //compile group: 'com.kumuluz.ee.discovery', name: 'kumuluzee-discovery-etcd', version:'1.0.0-SNAPSHOT'
 
